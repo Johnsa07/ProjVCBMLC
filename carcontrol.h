@@ -16,7 +16,6 @@ void StopTurn(void);
 void Left(void);
 void Right(void);
 void GoCar(int, int);
-void GoCar(car_state);
 void Car_Init(void);
 
 #endif

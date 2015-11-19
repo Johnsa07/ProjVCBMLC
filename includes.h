@@ -33,7 +33,6 @@
 #include "feedback.h"
 #include "machinelearning.h"
 
-#include "step_motor_drv.h"
 #include "i2c1_drv.h"
 #include "accl_drv.h"
 

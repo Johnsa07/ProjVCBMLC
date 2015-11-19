@@ -125,7 +125,7 @@ void StopTurn(void)
         GPIO_ResetBits(CAR_PORT, CAR_RIGHT_MASK); //Set bit for not going backwards
 }
 
-void GoCar(car_state command)
+void GoCars(car_state command)
 {
   if (command == 0){
     StopTurn();
