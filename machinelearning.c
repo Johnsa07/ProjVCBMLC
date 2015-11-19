@@ -14,11 +14,11 @@ int carX;
 int Q[7][7];
 int R[7][7] =
 {{100, 0, 0, 0, 0, 0, 0}, //Forward
-{0, 100, 0, 0, 0, 0, 0},
-{0, 0, 100, 0, 0, 0, 0},
+{0, 100, 0, 0, 0, 0, 0},  //Forward Left
+{0, 0, 100, 0, 0, 0, 0}, // Forward Right
 {0, 0, 0, 100, 0, 0, 0},  //Still
-{0, 0, 0, 0, 100, 0, 0},
-{0, 0, 0, 0, 0, 100, 0},
+{0, 0, 0, 0, 100, 0, 0}, // Back Left
+{0, 0, 0, 0, 0, 100, 0}, // Back Right
 {0, 0, 0, 0, 0, 0, 100}}; //Backward
 
 int QCollision[7][7];
@@ -57,7 +57,6 @@ void goToState(int state){
 		actionsTested[state] = true;
 	}
 	currentState = correctAction(state);
-	moveCar(currentState);
 }
 
 int correctAction(int state){
