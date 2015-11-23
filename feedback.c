@@ -69,13 +69,13 @@ if (accX[1] == 0 && accY[1] == 0)
    else if (accX[1] < 0 && accY[1] == 0)
   {return car_back;}
    else if (accX[1] > 0 && accY[1] > 0)
-  {return car_fwR;}
-   else if (accX[1] > 0 && accY[1] < 0)
   {return car_fwL;}
+   else if (accX[1] > 0 && accY[1] < 0)
+  {return car_fwR;}
    else if (accX[1] < 0 && accY[1] > 0)
-  {return car_backR;}
-   else if (accX[1] < 0 && accY[1] < 0)
   {return car_backL;}
+   else if (accX[1] < 0 && accY[1] < 0)
+  {return car_backR;}
   else
   {return car_error;}
 }
