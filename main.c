@@ -39,8 +39,8 @@ extern FontType_t Terminal_9_12_6;
 extern FontType_t Terminal_18_24_12;
 
 Int32U CriticalSecCntr;
-Int32S DegShow = 0, DegShow_h = 1, Delta, DegShowX=0,B,C;
-car_state A;
+Int32S DegShow = 0, DegShow_h = 1, Delta, DegShowX=0,C;
+car_state A, B;
 Flo32 Deg, DegX, XGrav, YGrav;
 Flo32 MotorDeg = 0.0;
 Boolean NewData = FALSE;
@@ -52,6 +52,7 @@ volatile Boolean CntrSel = FALSE;
 volatile Boolean CntrAngl = FALSE;
 volatile int Test = 0;
 volatile int TestTurn= 0;
+car_state whichAction(void);
 
 /*************************************************************************
  * Function Name: TickHandler
@@ -154,6 +155,7 @@ void data_transfer(void);
   DWT_Init();
   while(1)
   {
+    B=whichAction();
     A=position();
  /*   A = accX[1];
     B = velX[1];
@@ -189,6 +191,25 @@ void data_transfer(void);
     //Already implemented in ML-file. No need to alter (probably)
   }
 }
+
+car_state whichAction(void)
+{
+  if (Test==0) {return car_stop;}
+  else if (Test==1)
+  {
+    if (TestTurn==0) {return car_fw;}
+    else if (TestTurn==1) {return car_fwR;}
+    else if (TestTurn==2) {return car_fwL;}
+  } 
+  else if (Test==2)
+  {
+    if (TestTurn==0) {return car_back;}
+    else if (TestTurn==1) {return car_backR;}
+    else if (TestTurn==2) {return car_backL;}
+  }
+  return car_error;
+}
+
 
 
 
