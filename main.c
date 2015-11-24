@@ -151,6 +151,7 @@ void data_transfer(void);
     while(1);
   }
   Car_Init();
+  DWT_Init();
   while(1)
   {
     A=position();
