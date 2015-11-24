@@ -181,7 +181,7 @@ void data_transfer(void);
     // 5. Evaluate action compared to state
     //Already implemented in ML-file. No need to alter (probably)
     
-    // 6. Repeat 2-5 until all actions has been tested
+    // 6. Repeat 3-5 until all actions has been tested
     //Already implemented in ML-file. No need to alter (probably)
     
     // 7. Choose the correct state
