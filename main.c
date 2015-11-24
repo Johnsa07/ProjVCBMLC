@@ -166,6 +166,26 @@ void data_transfer(void);
     }
     
     GoCar(Test, TestTurn);
+    // 1. Give command (desired state)
+    //desiredState;
+
+    // 2. Run machine learning to test action
+    //goToState(desiredState);
+    
+    // 3. Wait x ms
+    //Wait in ML-method testAllActions
+    
+    // 4. Return value from accelerometer
+    //Return value from accelerometer in ML-method testAllActions
+    
+    // 5. Evaluate action compared to state
+    //Already implemented in ML-file. No need to alter (probably)
+    
+    // 6. Repeat 2-5 until all actions has been tested
+    //Already implemented in ML-file. No need to alter (probably)
+    
+    // 7. Choose the correct state
+    //Already implemented in ML-file. No need to alter (probably)
   }
 }
 

@@ -23,13 +23,13 @@ int R[7][7] =
 
 int QCollision[7][7];
 int RCollision[7][7] =
-{{0, 0, 0, 0, 0, 0, 0},
-{100, 0, 0, 0, 0, 0, 0},
-{100, 0, 0, 0, 0, 0, 0},
-{0, 100, 100, 100, 100, 100, 0},
-{0, 0, 0, 0, 0, 0, 100},
-{0, 0, 0, 0, 0, 0, 100},
-{0, 0, 0, 0, 0, 0, 0}};
+{{0, 100, 100, 0, 0, 0, 0},
+{0, 0, 0, 0, 0, 100, 0},
+{0, 0, 0, 100, 0, 0, 0},
+{0, 0, 0, 100, 0, 0, 0},
+{0, 100, 0, 0, 0, 0, 0},
+{0, 0, 100, 0, 0, 0, 0},
+{0, 0, 0, 0, 100, 100, 0}};
 
 int room[15][15];
 
@@ -44,6 +44,8 @@ void goToState(int state);
 
 
 void testAllActions(int state){
+  //Redo this method to test actions on the car
+  //And wait after each issued action
 	for (int i = 0; i < numOfStates; i++){
 		Q[state][i] = calcQ(i);
 	}
