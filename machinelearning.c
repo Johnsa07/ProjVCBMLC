@@ -46,8 +46,7 @@ void goToState(int state);
 void testAllActions(int state){
   //Redo this method to test actions on the car
   //And wait after each issued action
-  
-	//doAction 0
+  	//doAction 0
         for (int i = 0; i < numOfStates; i++){
                 GoCars(i);
         //wait

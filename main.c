@@ -52,7 +52,7 @@ volatile Boolean CntrSel = FALSE;
 volatile Boolean CntrAngl = FALSE;
 volatile int Test = 0;
 volatile int TestTurn= 0;
-car_state whichAction(void);
+car_state whichState(void);
 
 /*************************************************************************
  * Function Name: TickHandler
@@ -155,7 +155,7 @@ void data_transfer(void);
   DWT_Init();
   while(1)
   {
-    B=whichAction();
+    B=whichState();
     A=position();
  /*   A = accX[1];
     B = velX[1];
@@ -173,7 +173,7 @@ void data_transfer(void);
     //desiredState;
 
     // 2. Run machine learning to test action
-    //goToState(desiredState);
+    goToState(B);
     
     // 3. Wait x ms
     //Wait in ML-method testAllActions
@@ -192,7 +192,7 @@ void data_transfer(void);
   }
 }
 
-car_state whichAction(void)
+car_state whichState(void)
 {
   if (Test==0) {return car_stop;}
   else if (Test==1)
