@@ -9,5 +9,5 @@ int directReward(int action);
 int maxNextQ(int state);
 void testAllActions(int state);
 int correctAction(int state);
-void goToState(int state);
+int goToState(int state);
 bool collisionCheck(int action);

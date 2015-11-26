@@ -103,3 +103,37 @@ void move_end_check(void)
     velY[0]=0;
   }
 }
+
+/*car_state accl_feedback(void)
+{
+  Int32s Xacc=0, XXX, Yacc=0, YYY, ZZZ;
+  count1=0;
+  do
+  {
+  Accl_Get(&XXX,&YYY,&ZZZ);
+  Xacc=Xacc+XXX;
+  Yacc=Yacc+YYY;
+  count1++;
+  } while (count1<8)
+      if ((Xacc <=40)&&(Xacc >= -40)) 
+
+    if ((Yacc <= 40)&&(Yacc >= -40))
+      {Yacc = 0;} 
+      if (Xacc == 0 && Yacc == 0)
+{return car_stop;}
+   else if (Xacc > 0 && Yacc == 0)
+  {return car_fw;}
+   else if (Xacc < 0 && Yacc == 0)
+  {return car_back;}
+   else if (Xacc > 0 && Yacc > 0)
+  {return car_fwL;}
+   else if (aXacc > 0 && Yacc < 0)
+  {return car_fwR;}
+   else if (Xacc < 0 && Yacc > 0)
+  {return car_backL;}
+   else if (Xacc < 0 && Yacc < 0)
+  {return car_backR;}
+  else
+  {return car_error;}
+}
+  */

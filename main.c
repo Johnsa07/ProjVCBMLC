@@ -31,7 +31,6 @@
 //Hej!!
 
 #include "includes.h"
-#include "TM_delay.c"
 
 #define DLY_100US  450
 
@@ -39,16 +38,14 @@ extern FontType_t Terminal_6_8_6;
 extern FontType_t Terminal_9_12_6;
 extern FontType_t Terminal_18_24_12;
 
-Int32U CriticalSecCntr, action=0;
-Int32S DegShow = 0, DegShow_h = 1, Delta, DegShowX=0,C;
-car_state A, B;
-Flo32 Deg, DegX, XGrav, YGrav;
-Flo32 MotorDeg = 0.0;
+Int32U CriticalSecCntr;
+car_state car_feedback, car_instr, action=0;
 Boolean NewData = FALSE;
 Boolean Dir;
 Int32U Steps;
 
-volatile Boolean SysTickFl= TRUE;
+volatile Boolean SysTickF1= TRUE;
+volatile Boolean SysTickF2= TRUE;
 volatile Boolean CntrSel = FALSE;
 volatile Boolean CntrAngl = FALSE;
 volatile int Test = 0;
@@ -65,9 +62,10 @@ car_state whichState(void);
  *************************************************************************/
 void TickHandler(void)
 {
-  SysTickFl = TRUE;
+SysTickF1=TRUE;
     if(!(JS_RIGHT_MASK & JS_RIGHT_PORT->IDR))
   {
+      SysTickF2 = TRUE;
     CntrSel = TRUE;
     if (Test==2)
     {Test=0;}
@@ -76,6 +74,7 @@ void TickHandler(void)
   }
   else if (!(JS_LEFT_MASK & JS_LEFT_PORT->IDR))
   {
+      SysTickF2 = TRUE;
     CntrSel = FALSE;
     if (TestTurn==2)
     {TestTurn=0;}
@@ -131,8 +130,6 @@ void data_transfer(void);
   SysTick_Config(1500000);
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
 
-  // Step motor init
-  StepMotorInit();
   // I2C1 init
   I2C1_Init();
 
@@ -152,38 +149,49 @@ void data_transfer(void);
     GLCD_print("\fLIS3LV020 Init.\r\nfault\r\n");
     while(1);
   }
+  
+  //Init CarControl and Delay
   Car_Init();
   DWT_Init();
+  
   while(1)
   {
-    B=whichState();
-    A=position();
+    
+    car_feedback=position();
  /*   A = accX[1];
     B = velX[1];
     C = posX[1]; */
-
-    if(SysTickFl) //
-    {
-        SysTickFl = FALSE;
+if(SysTickF1)
+{
+        SysTickF1 = FALSE;
         GLCD_TextSetPos(0,0);
-        GLCD_print("\f%d Deg\r\n",A);
+        GLCD_print("\f%d Deg\r\n",car_feedback);
+}
+    if(SysTickF2) //
+    {
+            SysTickF2=FALSE;
+      car_instr=whichState();
+
+
     }
     
-    GoCar(Test, TestTurn);
+    //GoCar(Test, TestTurn);
     // 1. Give command (desired state)
     //desiredState;
 
     // 2. Run machine learning to test action
-    //action = goToState(B);
-    GoCars(B);
+    action = goToState(car_instr);
+    GoCars(action);
     
     int runTime = 0;
     while (runTime < 2){
         DWT_Delayms(1000);
         runTime++;
     }
-    
-    GoCars(3); //Stopping the car
+    car_instr=car_stop;
+    GoCars(car_instr);
+    while(1);
+    //GoCars(3); //Stopping the car
     
     
     // 3. Wait x ms

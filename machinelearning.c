@@ -1,5 +1,4 @@
 #include "includes.h"
-#include "TM_delay.c"
 
 int currentState;
 char desiredState;
@@ -48,13 +47,19 @@ void testAllActions(int state){
   //Redo this method to test actions on the car
   //And wait after each issued action
   	//doAction 0
+  car_state car_fb;
         for (int i = 0; i < numOfStates; i++){
                 GoCars(i);
         //wait
-                DWT_Delayms(500);
+                if(i==3)
+                {
+                DWT_Delay(2000000);
+                } else {
+                  DWT_Delay(1000000);
+                }
         //get Accelerometer value
-                i = position();
-                Q[state][i] = calcQ(i);
+                car_fb = position();
+                Q[state][car_fb] = calcQ(car_fb);
         }
 	
 }
