@@ -174,8 +174,8 @@ void data_transfer(void);
     //desiredState;
 
     // 2. Run machine learning to test action
-    action = goToState(B);
-    GoCars(action);
+    //action = goToState(B);
+    GoCars(B);
     
     int runTime = 0;
     while (runTime < 2){
