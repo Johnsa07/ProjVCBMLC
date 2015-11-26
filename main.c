@@ -31,6 +31,7 @@
 //Hej!!
 
 #include "includes.h"
+#include "TM_delay.c"
 
 #define DLY_100US  450
 
@@ -38,7 +39,7 @@ extern FontType_t Terminal_6_8_6;
 extern FontType_t Terminal_9_12_6;
 extern FontType_t Terminal_18_24_12;
 
-Int32U CriticalSecCntr;
+Int32U CriticalSecCntr, action=0;
 Int32S DegShow = 0, DegShow_h = 1, Delta, DegShowX=0,C;
 car_state A, B;
 Flo32 Deg, DegX, XGrav, YGrav;
@@ -173,7 +174,17 @@ void data_transfer(void);
     //desiredState;
 
     // 2. Run machine learning to test action
-    goToState(B);
+    action = goToState(B);
+    GoCars(action);
+    
+    int runTime = 0;
+    while (runTime < 2){
+        DWT_Delayms(1000);
+        runTime++;
+    }
+    
+    GoCars(3); //Stopping the car
+    
     
     // 3. Wait x ms
     //Wait in ML-method testAllActions

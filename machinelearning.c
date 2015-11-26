@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "TM_delay.c"
 
 int currentState;
 char desiredState;
@@ -39,7 +40,7 @@ int directReward(int action);
 int maxNextQ(int state);
 void testAllActions(int state);
 int correctAction(int state);
-void goToState(int state);
+int goToState(int state);
 //bool collisionCheck(int action);
 
 
@@ -50,6 +51,7 @@ void testAllActions(int state){
         for (int i = 0; i < numOfStates; i++){
                 GoCars(i);
         //wait
+                DWT_Delayms(500);
         //get Accelerometer value
                 i = position();
                 Q[state][i] = calcQ(i);
@@ -57,7 +59,7 @@ void testAllActions(int state){
 	
 }
 
-void goToState(int state){
+int goToState(int state){
 
 	if (actionsTested[state] == false)
 	{
@@ -65,6 +67,7 @@ void goToState(int state){
 		actionsTested[state] = true;
 	}
 	currentState = correctAction(state);
+        return currentState;
 }
 
 int correctAction(int state){
