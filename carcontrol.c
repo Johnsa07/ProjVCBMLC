@@ -33,6 +33,11 @@ GPIO_Init(CAR_PORT, &GPIO_InitStructure);
 //PE5 init
 GPIO_InitStructure.GPIO_Pin = CAR_LEFT_MASK;
 GPIO_Init(CAR_PORT, &GPIO_InitStructure);
+
+GPIO_SetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
+        GPIO_SetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Set bit for not going backwards
+        GPIO_SetBits(CAR_PORT, CAR_RIGHT_MASK); //Reset bit for not going forward
+        GPIO_SetBits(CAR_PORT, CAR_LEFT_MASK); //Set bit for not going backwards
 }
 
 /*************************************************************************
@@ -76,8 +81,8 @@ void Backwards(void)
  *************************************************************************/
 void Stop(void)
 {
-        GPIO_ResetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
-        GPIO_ResetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Set bit for not going backwards
+        GPIO_SetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
+        GPIO_SetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Set bit for not going backwards
 }
 
 /*************************************************************************
@@ -121,8 +126,8 @@ void Left(void)
  *************************************************************************/
 void StopTurn(void)
 {
-        GPIO_ResetBits(CAR_PORT, CAR_LEFT_MASK); //Reset bit for not going forward
-        GPIO_ResetBits(CAR_PORT, CAR_RIGHT_MASK); //Set bit for not going backwards
+        GPIO_SetBits(CAR_PORT, CAR_LEFT_MASK); //Reset bit for not going forward
+        GPIO_SetBits(CAR_PORT, CAR_RIGHT_MASK); //Set bit for not going backwards
 }
 
 void GoCars(car_state command)
