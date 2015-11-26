@@ -65,7 +65,9 @@ void testAllActions(int state){
 }
 
 int goToState(int state){
-
+        
+        nextState = state;
+          
 	if (actionsTested[state] == false)
 	{
 		testAllActions(state);
