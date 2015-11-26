@@ -55,7 +55,7 @@ void testAllActions(int state){
                 {
                 DWT_Delay(5000000);
                 } else {
-                  DWT_Delay(200000);
+                  DWT_Delay(500000);
                 }
         //get Accelerometer value
                 car_fb = position();

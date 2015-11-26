@@ -190,6 +190,8 @@ if(SysTickF1)
     }
     car_instr=car_stop;
     GoCars(car_instr);
+            GLCD_TextSetPos(0,0);
+            GLCD_print("\f%d, %d, %d, %d\r\n", Q[3][0] Q[3][1] Q[3][2] Q[3][3]);
     while(1);
     //GoCars(3); //Stopping the car
     
