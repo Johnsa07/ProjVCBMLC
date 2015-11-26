@@ -182,7 +182,7 @@ if(SysTickF1)
     // 2. Run machine learning to test action
     action = goToState(car_instr);
     GoCars(action);
-    
+
     int runTime = 0;
     while (runTime < 2){
         DWT_Delayms(1000);
