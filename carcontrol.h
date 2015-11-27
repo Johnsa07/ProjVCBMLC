@@ -8,6 +8,10 @@
 #define JS_RIGHT_PORT   GPIOC
 #define JS_LEFT_MASK    GPIO_Pin_7
 #define JS_LEFT_PORT    GPIOE
+#define JS_UP_MASK   GPIO_Pin_3
+#define JS_UP_PORT   GPIOC
+#define JS_DOWN_MASK    GPIO_Pin_13
+#define JS_DOWN_PORT    GPIOE
 
 void Forward(void);
 void Backwards(void);

@@ -10,6 +10,8 @@ int roomSize = 15;
 int currentPlace;
 int carY;
 int carX;
+int X_accFeedback[7];
+int Y_accFeedback[7];
 
 int Q[7][7];
 int R[7][7] =
@@ -59,7 +61,9 @@ void testAllActions(int state){
                 }
         //get Accelerometer value
                 car_fb = position();
-                Q[state][car_fb] = calcQ(car_fb);
+                X_accFeedback[i] = get_X();
+                Y_accFeedback[i] = get_Y();
+                Q[state][i] = calcQ(car_fb);
         }
 	
 }
@@ -110,6 +114,9 @@ int maxNextQ(int action){
 int calcQ(int action){
 	return directReward(action) + gammah*maxNextQ(action);
 }
+                
+        int Q_get(int Q_index1, int Q_index2)
+  {return Q[Q_index1][Q_index2];}
 
 
 void initialize(){
@@ -121,3 +128,6 @@ void initialize(){
 		}
 	}
 }
+
+int get_X_accFeedback(int index) {return X_accFeedback[index];}
+int get_Y_accFeedback(int index) {return Y_accFeedback[index];}

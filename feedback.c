@@ -3,9 +3,10 @@
 
 int countX, countY;
 Int16S X, Y, Z, XVel=0, YVel=0, ZVel=0 , XPos=0, YPos=0, ZPos=0;
-long velX[2], velY[2], accX[2], accY[2], posX[2], posY[2];
+long velX[2], velY[2], accX[2], accY[2], posX[2], posY[2], XXX, YYY;
 void move_end_check(void);
 car_state XV;
+const int sense=60;
 
  car_state position(void)
 {
@@ -24,14 +25,16 @@ car_state XV;
     accX[1]=accX[1]>>6; //Div by 64
     accY[1]=accY[1]>>6;
     
-    accX[1]=accX[1]-30; //Remove the offset due to gravity
-    accY[1]=accY[1]-6;
-    
-    if ((accX[1] <=20)&&(accX[1] >= -20)) //Discrimination window applied
+    //accX[1]=accX[1]-30; //Remove the offset due to gravity
+    //accY[1]=accY[1]-6;
+    XXX=accX[1];
+   YYY=accY[1];
+
+    if ((accX[1] <=sense)&&(accX[1] >= -sense)) //Discrimination window applied
       {accX[1] = 0;} // to the X axis acceleration
       //variable
 
-    if ((accY[1] <= 20)&&(accY[1] >= -20))
+    if ((accY[1] <= sense)&&(accY[1] >= -sense))
       {accY[1] = 0;} 
     
     //First integration:
@@ -62,19 +65,19 @@ car_state XV;
     posY[0] = posY[1];
     posX[1]=posX[1]>>16;
 
-if (accX[1] == 0 && accY[1] == 0)
+if (accX[1] == 0)
 {return car_stop;}
-   else if (accX[1] > 0 && accY[1] == 0)
-  {return car_fw;}
    else if (accX[1] < 0 && accY[1] == 0)
+  {return car_fw;}
+   else if (accX[1] > 0 && accY[1] == 0)
   {return car_back;}
-   else if (accX[1] > 0 && accY[1] > 0)
-  {return car_fwL;}
-   else if (accX[1] > 0 && accY[1] < 0)
-  {return car_fwR;}
    else if (accX[1] < 0 && accY[1] > 0)
-  {return car_backL;}
+  {return car_fwL;}
    else if (accX[1] < 0 && accY[1] < 0)
+  {return car_fwR;}
+   else if (accX[1] > 0 && accY[1] > 0)
+  {return car_backL;}
+   else if (accX[1] > 0 && accY[1] < 0)
   {return car_backR;}
   else
   {return car_error;}
@@ -103,6 +106,9 @@ void move_end_check(void)
     velY[0]=0;
   }
 }
+
+long get_X() {return XXX;}
+long get_Y() {return YYY;}
 
 /*car_state accl_feedback(void)
 {

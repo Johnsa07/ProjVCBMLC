@@ -3,6 +3,7 @@
 #define true 1
 #define false 0
 
+
 void initialize();
 int calcQ(int action);
 int directReward(int action);

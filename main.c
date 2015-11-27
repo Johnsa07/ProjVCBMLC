@@ -39,15 +39,14 @@ extern FontType_t Terminal_9_12_6;
 extern FontType_t Terminal_18_24_12;
 
 Int32U CriticalSecCntr;
-car_state car_feedback, car_instr, action=0;
+car_state car_feedback, car_instr=car_stop, action=0;
 Boolean NewData = FALSE;
 Boolean Dir;
 Int32U Steps;
 
 volatile Boolean SysTickF1= TRUE;
-volatile Boolean SysTickF2= TRUE;
-volatile Boolean CntrSel = FALSE;
-volatile Boolean CntrAngl = FALSE;
+volatile Boolean NewInstr = TRUE;
+volatile Boolean Dummy = FALSE;
 volatile int Test = 0;
 volatile int TestTurn= 0;
 car_state whichState(void);
@@ -63,24 +62,29 @@ car_state whichState(void);
 void TickHandler(void)
 {
 SysTickF1=TRUE;
+if (car_instr == car_stop)
+{
     if(!(JS_RIGHT_MASK & JS_RIGHT_PORT->IDR))
   {
-      SysTickF2 = TRUE;
-    CntrSel = TRUE;
-    if (Test==2)
-    {Test=0;}
-    else
-    { Test+=1;}
+      NewInstr = TRUE;
+      car_instr=car_stop;
   }
   else if (!(JS_LEFT_MASK & JS_LEFT_PORT->IDR))
   {
-      SysTickF2 = TRUE;
-    CntrSel = FALSE;
-    if (TestTurn==2)
-    {TestTurn=0;}
-    else
-    { TestTurn+=1;}
+      NewInstr = TRUE;
+      car_instr=car_fwR;
   }
+    else if (!(JS_DOWN_MASK & JS_DOWN_PORT->IDR))
+  {
+      NewInstr = TRUE;
+      car_instr=car_back;
+  }
+    else if (!(JS_UP_MASK & JS_UP_PORT->IDR))
+  {
+      NewInstr = TRUE;
+      car_instr=car_fw;
+  } 
+}
 }
 
 /*************************************************************************
@@ -136,10 +140,10 @@ void data_transfer(void);
   EXT_CRT_SECTION();
 
   // GLCD init
-  GLCD_PowerUpInit((pInt8U)IAR_Logo.pPicStream); //(
+  GLCD_PowerUpInit(0x0); //(
   GLCD_Backlight(BACKLIGHT_ON);
   GLCD_SetFont(&Terminal_9_12_6,0x000F00,0x00FF0);
-  GLCD_SetWindow(10,104,131,131);
+  GLCD_SetWindow(10,10,131,131);
 
   // Init Accl sensor
   if(FALSE == Accl_Init())
@@ -164,16 +168,12 @@ void data_transfer(void);
 if(SysTickF1)
 {
         SysTickF1 = FALSE;
-        GLCD_TextSetPos(0,0);
-        GLCD_print("\f%d Deg\r\n",car_feedback);
+        //GLCD_TextSetPos(0,0);
+            GLCD_print("Current state: %d \r",car_feedback);
 }
-    if(SysTickF2) //
+    if(NewInstr) //
     {
-            SysTickF2=FALSE;
-      car_instr=whichState();
-
-
-    }
+      NewInstr = FALSE;
     
     //GoCar(Test, TestTurn);
     // 1. Give command (desired state)
@@ -182,7 +182,6 @@ if(SysTickF1)
     // 2. Run machine learning to test action
     action = goToState(car_instr);
     GoCars(action);
-
     int runTime = 0;
     while (runTime < 2){
         DWT_Delayms(1000);
@@ -191,8 +190,15 @@ if(SysTickF1)
     car_instr=car_stop;
     GoCars(car_instr);
             GLCD_TextSetPos(0,0);
-            GLCD_print("\f%d, %d, %d, %d\r\n", Q[3][0] Q[3][1] Q[3][2] Q[3][3]);
-    while(1);
+            GLCD_print("\f(%d,%d)\r\n", get_X_accFeedback(0), get_Y_accFeedback(0));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(1), get_Y_accFeedback(1));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(2), get_Y_accFeedback(2));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(3), get_Y_accFeedback(3));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(4), get_Y_accFeedback(4));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(5), get_Y_accFeedback(5));
+            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(6), get_Y_accFeedback(6));
+            DWT_Delayms(2000);
+    }
     //GoCars(3); //Stopping the car
     
     

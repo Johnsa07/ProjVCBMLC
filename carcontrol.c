@@ -10,12 +10,12 @@ void Car_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   
-  GPIO_InitStructure.GPIO_Pin =  JS_RIGHT_MASK;
+  GPIO_InitStructure.GPIO_Pin =  JS_RIGHT_MASK | JS_UP_MASK;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(JS_RIGHT_PORT, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin =  JS_LEFT_MASK;
+  GPIO_InitStructure.GPIO_Pin =  JS_LEFT_MASK | JS_DOWN_MASK;
   GPIO_Init(JS_LEFT_PORT, &GPIO_InitStructure);
   
     //PE2 init
@@ -51,8 +51,8 @@ GPIO_SetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
  *************************************************************************/
 void Forward(void)
 {
-        GPIO_ResetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Reset bit for not going backwards
-        GPIO_SetBits(CAR_PORT, CAR_FORWARD_MASK); //Set bit for going forward
+        GPIO_SetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Reset bit for not going backwards
+        GPIO_ResetBits(CAR_PORT, CAR_FORWARD_MASK); //Set bit for going forward
 }
 
 /*************************************************************************
@@ -66,8 +66,8 @@ void Forward(void)
  *************************************************************************/
 void Backwards(void)
 {
-        GPIO_ResetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
-        GPIO_SetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Set bit for going backwards
+        GPIO_SetBits(CAR_PORT, CAR_FORWARD_MASK); //Reset bit for not going forward
+        GPIO_ResetBits(CAR_PORT, CAR_BACKWARDS_MASK); //Set bit for going backwards
 }
 
 /*************************************************************************
