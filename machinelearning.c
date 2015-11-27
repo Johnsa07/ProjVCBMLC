@@ -42,6 +42,7 @@ int maxNextQ(int state);
 void testAllActions(int state);
 int correctAction(int state);
 int goToState(int state);
+bool validTest(int state);
 //bool collisionCheck(int action);
 
 
@@ -75,10 +76,26 @@ int goToState(int state){
 	if (actionsTested[state] == false)
 	{
 		testAllActions(state);
-		actionsTested[state] = true;
+                if (validTest(state) == true){
+                        actionsTested[state] = true;
+                }
 	}
 	currentState = correctAction(state);
         return currentState;
+}
+
+bool validTest(int state){
+        bool valid = false;
+        int test = 0;
+        for (int i = 0; i < numOfStates; i++){
+                if (Q[state][i] == 100 && valid == true) {
+                        valid = false;
+                }                        
+                if (Q[state][i] == 100 && valid == false){
+                        valid = true;                   
+                }
+        }
+        return valid;
 }
 
 int correctAction(int state){
