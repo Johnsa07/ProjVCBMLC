@@ -6,7 +6,7 @@ Int16S X, Y, Z, XVel=0, YVel=0, ZVel=0 , XPos=0, YPos=0, ZPos=0;
 long velX[2], velY[2], accX[2], accY[2], posX[2], posY[2], XXX, YYY;
 void move_end_check(void);
 car_state XV;
-const int sense=60;
+const int sense=80;
 
  void position(void)
 {
@@ -115,19 +115,19 @@ long get_Yvel() {return velY[0];}
 car_state accl_feedback(void)
 {
 
-      if (XXX == 0)
+      if (velX[1] == 0 && velY[1] == 0)
 {return car_stop;}
-   else if (XXX > 0 && YYY == 0)
+   else if (velX[1] > 0 && velY[1] == 0)
   {return car_fw;}
-   else if (XXX < 0 && YYY == 0)
+   else if (velX[1] < 0 && velY[1] == 0)
   {return car_back;}
-   else if (XXX > 0 && YYY > 0)
+   else if (velX[1] > 0 && accY[1] > 0)
   {return car_fwL;}
-   else if (XXX > 0 && YYY < 0)
+   else if (velX[1] > 0 && accY[1] < 0)
   {return car_fwR;}
-   else if (XXX < 0 && YYY > 0)
+   else if (velX[1] < 0 && accY[1] > 0)
   {return car_backL;}
-   else if (XXX < 0 && YYY < 0)
+   else if (velX[1] < 0 && accY[1] < 0)
   {return car_backR;}
   else
   {return car_error;}

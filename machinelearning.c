@@ -52,21 +52,27 @@ void testAllActions(int state){
   	//doAction 0
   car_state car_fb;
         for (int i = 0; i < numOfStates; i++){
+          if (1) //(i==0 || i==3 || i==6)
+          {
                 GoCars(i);
         //wait
                 if(i==3)
                 {
                 DWT_Delay(5000000);
                 } else {
-                  DWT_Delay(200000);
+                  DWT_Delay(350000);
                 }
         //get Accelerometer value
+                do
+                {
                 car_fb = accl_feedback();
+                } while (car_fb != car_error)
+                Q[state][i] = calcQ(car_fb);
+          }
                 X_accFeedback[i] = get_X();
                 Y_accFeedback[i] = get_Y();
                 X_vel[i] = get_Xvel();
                 Y_vel[i] = get_Yvel();
-                Q[state][i] = calcQ(car_fb);
         }
 	
 }

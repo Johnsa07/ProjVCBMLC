@@ -148,15 +148,15 @@ void GoCars(car_state command)
     Left();
     Forward();
   }
-    else if (command == 4){
+    else if (command == 6){
     StopTurn();
     Backwards();
   }
-      else if (command == 5){
+      else if (command == 4){
     Right();
     Backwards();
   }
-      else if (command == 6){
+      else if (command == 5){
     Left();
     Backwards();
   }  else {

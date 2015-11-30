@@ -131,9 +131,7 @@ void data_transfer(void);
   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
   
-  //Init CarControl and Delay
-  Car_Init();
-  DWT_Init();
+
 
   // I2C1 init
   I2C1_Init();
@@ -154,6 +152,9 @@ void data_transfer(void);
     GLCD_print("\fLIS3LV020 Init.\r\nfault\r\n");
     while(1);
   }
+    //Init CarControl and Delay
+  Car_Init();
+  DWT_Init();
     // SysTick end of count event each 0.5s with input clock equal to 9MHz (HCLK/8, default)
   SysTick_Config(150000);
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
@@ -171,11 +172,7 @@ if(SysTickF1)
 {
         SysTickF1 = FALSE;
         //GLCD_TextSetPos(0,0);
-            GLCD_print("\f%d, %d \r\n", get_Xvel(), get_Yvel());
-            DWT_Delayms(10);
-            GLCD_print("%d, %d \r\n", get_Xvel(), get_Yvel());
-            DWT_Delayms(10);
-            GLCD_print("%d, %d \r", get_Xvel(), get_Yvel());
+            GLCD_print("%d, %d \r", get_Xvel(), accl_feedback());
             DWT_Delayms(10);
             
 }
@@ -191,8 +188,8 @@ if(SysTickF1)
     action = goToState(car_instr);
     GoCars(action);
     int runTime = 0;
-    while (runTime < 2){
-        DWT_Delayms(1000);
+    while (runTime < 1){
+        DWT_Delayms(700);
         runTime++;
     }
             GLCD_TextSetPos(0,0);
