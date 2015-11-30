@@ -10,8 +10,8 @@ int roomSize = 15;
 int currentPlace;
 int carY;
 int carX;
-int X_accFeedback[7];
-int Y_accFeedback[7];
+int X_accFeedback[7], X_vel[7];
+int Y_accFeedback[7], Y_vel[7];
 
 int Q[7][7];
 int R[7][7] =
@@ -58,12 +58,14 @@ void testAllActions(int state){
                 {
                 DWT_Delay(5000000);
                 } else {
-                  DWT_Delay(500000);
+                  DWT_Delay(200000);
                 }
         //get Accelerometer value
-                car_fb = position();
+                car_fb = accl_feedback();
                 X_accFeedback[i] = get_X();
                 Y_accFeedback[i] = get_Y();
+                X_vel[i] = get_Xvel();
+                Y_vel[i] = get_Yvel();
                 Q[state][i] = calcQ(car_fb);
         }
 	
@@ -132,7 +134,7 @@ int calcQ(int action){
 	return directReward(action) + gammah*maxNextQ(action);
 }
                 
-        int Q_get(int Q_index1, int Q_index2)
+int Q_get(int Q_index1, int Q_index2)
   {return Q[Q_index1][Q_index2];}
 
 
@@ -148,3 +150,6 @@ void initialize(){
 
 int get_X_accFeedback(int index) {return X_accFeedback[index];}
 int get_Y_accFeedback(int index) {return Y_accFeedback[index];}
+int get_X_vel(int index) {return X_vel[index];}
+int get_Y_vel(int index) {return Y_vel[index];}
+

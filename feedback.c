@@ -8,7 +8,7 @@ void move_end_check(void);
 car_state XV;
 const int sense=60;
 
- car_state position(void)
+ void position(void)
 {
   unsigned int count1;
   count1 = 0;
@@ -65,7 +65,7 @@ const int sense=60;
     posY[0] = posY[1];
     posX[1]=posX[1]>>16;
 
-if (accX[1] == 0)
+/*if (accX[1] == 0)
 {return car_stop;}
    else if (accX[1] < 0 && accY[1] == 0)
   {return car_fw;}
@@ -80,7 +80,7 @@ if (accX[1] == 0)
    else if (accX[1] > 0 && accY[1] < 0)
   {return car_backR;}
   else
-  {return car_error;}
+  {return car_error;}*/
 }
 
 void move_end_check(void)
@@ -90,7 +90,7 @@ void move_end_check(void)
   else 
   {countX=0;}
   
-  if (countX >= 925) //if this number exceeds 25, we assume that veocity i zero
+  if (countX >= 45) //if this number exceeds 25, we assume that veocity i zero
   {
     velX[1]=0;
     velX[0]=0;
@@ -100,7 +100,7 @@ void move_end_check(void)
   {countY++;}
   else {countY=0;}
   
-  if (countY >= 925)
+  if (countY >= 45)
   {
     velY[1]=0;
     velY[0]=0;
@@ -109,37 +109,27 @@ void move_end_check(void)
 
 long get_X() {return XXX;}
 long get_Y() {return YYY;}
+long get_Xvel() {return velX[0];}
+long get_Yvel() {return velY[0];}
 
-/*car_state accl_feedback(void)
+car_state accl_feedback(void)
 {
-  Int32s Xacc=0, XXX, Yacc=0, YYY, ZZZ;
-  count1=0;
-  do
-  {
-  Accl_Get(&XXX,&YYY,&ZZZ);
-  Xacc=Xacc+XXX;
-  Yacc=Yacc+YYY;
-  count1++;
-  } while (count1<8)
-      if ((Xacc <=40)&&(Xacc >= -40)) 
 
-    if ((Yacc <= 40)&&(Yacc >= -40))
-      {Yacc = 0;} 
-      if (Xacc == 0 && Yacc == 0)
+      if (XXX == 0)
 {return car_stop;}
-   else if (Xacc > 0 && Yacc == 0)
+   else if (XXX > 0 && YYY == 0)
   {return car_fw;}
-   else if (Xacc < 0 && Yacc == 0)
+   else if (XXX < 0 && YYY == 0)
   {return car_back;}
-   else if (Xacc > 0 && Yacc > 0)
+   else if (XXX > 0 && YYY > 0)
   {return car_fwL;}
-   else if (aXacc > 0 && Yacc < 0)
+   else if (XXX > 0 && YYY < 0)
   {return car_fwR;}
-   else if (Xacc < 0 && Yacc > 0)
+   else if (XXX < 0 && YYY > 0)
   {return car_backL;}
-   else if (Xacc < 0 && Yacc < 0)
+   else if (XXX < 0 && YYY < 0)
   {return car_backR;}
   else
   {return car_error;}
 }
-  */
+  

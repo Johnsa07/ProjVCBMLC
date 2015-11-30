@@ -10,13 +10,17 @@ void Car_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   
-  GPIO_InitStructure.GPIO_Pin =  JS_RIGHT_MASK | JS_UP_MASK;
+  GPIO_InitStructure.GPIO_Pin =  JS_RIGHT_MASK;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(JS_RIGHT_PORT, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin =  JS_UP_MASK;
+  GPIO_Init(JS_UP_PORT, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin =  JS_LEFT_MASK | JS_DOWN_MASK;
+  GPIO_InitStructure.GPIO_Pin =  JS_LEFT_MASK;
   GPIO_Init(JS_LEFT_PORT, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Pin =  JS_DOWN_MASK;
+  GPIO_Init(JS_DOWN_PORT, &GPIO_InitStructure);
   
     //PE2 init
   GPIO_InitStructure.GPIO_Pin =  CAR_FORWARD_MASK;

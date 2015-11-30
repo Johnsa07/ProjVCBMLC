@@ -50,6 +50,7 @@ volatile Boolean Dummy = FALSE;
 volatile int Test = 0;
 volatile int TestTurn= 0;
 car_state whichState(void);
+void position(void);
 
 /*************************************************************************
  * Function Name: TickHandler
@@ -62,18 +63,19 @@ car_state whichState(void);
 void TickHandler(void)
 {
 SysTickF1=TRUE;
-if (car_instr == car_stop)
+position();
+if (car_instr == car_stop && !NewInstr)
 {
-    if(!(JS_RIGHT_MASK & JS_RIGHT_PORT->IDR))
+    if(!GPIO_ReadInputDataBit(JS_RIGHT_PORT, JS_RIGHT_MASK)) //!(JS_RIGHT_MASK & JS_RIGHT_PORT->IDR)
   {
       NewInstr = TRUE;
       car_instr=car_stop;
   }
-  else if (!(JS_LEFT_MASK & JS_LEFT_PORT->IDR))
+  /*else if (!GPIO_ReadInputDataBit(JS_LEFT_PORT, JS_LEFT_MASK))  //!(JS_LEFT_MASK & JS_LEFT_PORT->IDR)
   {
       NewInstr = TRUE;
       car_instr=car_fwR;
-  }
+  }*/
     else if (!(JS_DOWN_MASK & JS_DOWN_PORT->IDR))
   {
       NewInstr = TRUE;
@@ -115,7 +117,6 @@ void DelayResolution100us(Int32U Dly)
  * Description: main
  *
  *************************************************************************/
-long position(void);
 void move_end_check(void);
 void data_transfer(void);
 
@@ -129,10 +130,10 @@ void data_transfer(void);
   /* Set the Vector Table base location at 0x08000000 */
   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-
-  // SysTick end of count event each 0.5s with input clock equal to 9MHz (HCLK/8, default)
-  SysTick_Config(1500000);
-  SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+  
+  //Init CarControl and Delay
+  Car_Init();
+  DWT_Init();
 
   // I2C1 init
   I2C1_Init();
@@ -153,15 +154,16 @@ void data_transfer(void);
     GLCD_print("\fLIS3LV020 Init.\r\nfault\r\n");
     while(1);
   }
-  
-  //Init CarControl and Delay
-  Car_Init();
-  DWT_Init();
-  
+    // SysTick end of count event each 0.5s with input clock equal to 9MHz (HCLK/8, default)
+  SysTick_Config(150000);
+  SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+
+  DWT_Delayms(100);
   while(1)
   {
-    
-    car_feedback=position();
+
+    //while(1){GLCD_print("Current state: %d \r",GPIO_ReadInputDataBit(JS_LEFT_PORT, JS_LEFT_MASK));} 
+    //car_feedback=accl_feedback();
  /*   A = accX[1];
     B = velX[1];
     C = posX[1]; */
@@ -169,7 +171,13 @@ if(SysTickF1)
 {
         SysTickF1 = FALSE;
         //GLCD_TextSetPos(0,0);
-            GLCD_print("Current state: %d \r",car_feedback);
+            GLCD_print("\f%d, %d \r\n", get_Xvel(), get_Yvel());
+            DWT_Delayms(10);
+            GLCD_print("%d, %d \r\n", get_Xvel(), get_Yvel());
+            DWT_Delayms(10);
+            GLCD_print("%d, %d \r", get_Xvel(), get_Yvel());
+            DWT_Delayms(10);
+            
 }
     if(NewInstr) //
     {
@@ -187,16 +195,16 @@ if(SysTickF1)
         DWT_Delayms(1000);
         runTime++;
     }
-    car_instr=car_stop;
-    GoCars(car_instr);
             GLCD_TextSetPos(0,0);
-            GLCD_print("\f(%d,%d)\r\n", get_X_accFeedback(0), get_Y_accFeedback(0));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(1), get_Y_accFeedback(1));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(2), get_Y_accFeedback(2));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(3), get_Y_accFeedback(3));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(4), get_Y_accFeedback(4));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(5), get_Y_accFeedback(5));
-            GLCD_print("(%d,%d) \r\n", get_X_accFeedback(6), get_Y_accFeedback(6));
+            GLCD_print("\f(%d,%d), (%d,%d)\r\n", get_X_accFeedback(0), get_Y_accFeedback(0), get_X_vel(0), get_Y_vel(0));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(1), get_Y_accFeedback(1), get_X_vel(1), get_Y_vel(1));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(2), get_Y_accFeedback(2), get_X_vel(2), get_Y_vel(2));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(3), get_Y_accFeedback(3), get_X_vel(3), get_Y_vel(3));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(4), get_Y_accFeedback(4), get_X_vel(4), get_Y_vel(4));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(5), get_Y_accFeedback(5), get_X_vel(5), get_Y_vel(5));
+            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(6), get_Y_accFeedback(6), get_X_vel(6), get_Y_vel(6));
+                car_instr=car_stop;
+    GoCars(car_instr);
             DWT_Delayms(2000);
     }
     //GoCars(3); //Stopping the car
