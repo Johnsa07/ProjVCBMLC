@@ -90,12 +90,12 @@ bool validTest(int state){
         bool valid = false;
         int test = 0;
         for (int i = 0; i < numOfStates; i++){
-                if (Q[state][i] == 100 && valid == true) {
-                        valid = false;
+                if (Q[state][i] == 100) {
+                        test++;
                 }                        
-                if (Q[state][i] == 100 && valid == false){
-                        valid = true;                   
-                }
+        }
+        if (test == 1){
+                valid = true;
         }
         return valid;
 }
