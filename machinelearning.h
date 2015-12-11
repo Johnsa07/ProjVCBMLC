@@ -4,11 +4,13 @@
 #define false 0
 
 
-void initialize();
-int calcQ(int action);
-int directReward(int action);
-int maxNextQ(int state);
-void testAllActions(int state);
-int correctAction(int state);
+void initialize(); //Klar
+int calcQ(int action, bool distance);
+int directReward(int action, bool distance);
+int maxNextQ(int state, bool distance);
+void testAllActions(int state, bool distance);
+int correctAction(int state, bool distance);
 int goToState(int state);
+bool validTest(int state);
 bool collisionCheck(int action);
+bool distanceCheck(int action);

@@ -38,7 +38,7 @@ int directReward(int action, bool distance);
 int maxNextQ(int state, bool distance);
 void testAllActions(int state, bool distance);
 int correctAction(int state, bool distance);
-void goToState(int state);
+int goToState(int state);
 bool validTest(int state);
 bool collisionCheck(int action);
 bool distanceCheck(int action);
@@ -92,10 +92,10 @@ void testAllActions(int state, bool distance){
   }
 }
 
-void goToState(int state){
+int goToState(int state){
   bool collide;
   int actionCounter = 0;
-  collide = distanceCheck(300);
+  collide = distanceCheck(//HÄR SKA MAN LÄSA AV VÄRDE FRÅN DISTANCE GIVER);
   if (collide == false){
     if (actionsTested[state] == false)
     {
@@ -116,8 +116,10 @@ void goToState(int state){
       prevState = currentState;
       currentState = correctAction(currentState, collide);
       actionCounter++;
+      return currentState;
     } while (currentState != 0  /*actionCounter < 7*/);
   }
+  return currentState;
 }
 
 bool validTest(int state){
@@ -213,10 +215,10 @@ int maxNextQ(int action, bool distance){
 
 int calcQ(int action, bool distance){
 	if (distance == false){
-		return static_cast<int>(directReward(action, distance) + gammah*maxNextQ(action, distance));
+		return directReward(action, distance) + gammah*maxNextQ(action, distance);
 	}
 	else{
-		return static_cast<int> (directReward(action, distance));
+		return directReward(action, distance);
 	}
 }
 
@@ -227,7 +229,7 @@ int Q_get(int Q_index1, int Q_index2)
 bool distanceCheck(int distance){
   bool avoid = false;
   
-  if (distance < 200){
+  if (distance < //LÄMPLIGT DISTANCE GIVER-VÄRDE){
     avoid = true;
   }
   else {
