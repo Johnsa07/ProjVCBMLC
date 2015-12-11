@@ -2,7 +2,6 @@
 
 int prevState;
 int currentState;
-char desiredState;
 int nextState;
 int memState;
 double gammah = 0.7;
@@ -10,10 +9,8 @@ bool avoid = false;
 bool actionsTested[7] = {false, false, false, false, false, false, false};
 bool actionsTestedCollision[7] = {false, false, false, false, false, false, false};
 int numOfStates = 7;
-int roomSize = 15;
-int currentPlace;
-int carY;
-int carX;
+int X_accFeedback[7], X_vel[7];
+int Y_accFeedback[7], Y_vel[7];
 
 int Q[7][7];
 int R[7][7] =
@@ -39,14 +36,11 @@ void initialize(); //Klar
 int calcQ(int action, bool distance);
 int directReward(int action, bool distance);
 int maxNextQ(int state, bool distance);
-void printQ();
-//void printRoom(); 
 void testAllActions(int state, bool distance);
 int correctAction(int state, bool distance);
 void goToState(int state);
-void moveCar(int action);
+bool validTest(int state);
 bool collisionCheck(int action);
-void printQCollision();
 bool distanceCheck(int action);
 
 
@@ -101,7 +95,7 @@ void testAllActions(int state, bool distance){
 void goToState(int state){
   bool collide;
   int actionCounter = 0;
-  collide = distanceCheck(READ VALUE FROM DISTANCE GIVER);
+  collide = distanceCheck(300);
   if (collide == false){
     if (actionsTested[state] == false)
     {
@@ -110,7 +104,6 @@ void goToState(int state){
     }
     prevState = currentState;
     currentState = correctAction(state, collide);
-    moveCar(state);
   }
   else {
     do {
@@ -123,10 +116,6 @@ void goToState(int state){
       prevState = currentState;
       currentState = correctAction(currentState, collide);
       actionCounter++;
-      moveCar(currentState);
-      printQCollision();
-      cout<<"In state: " << currentState << ". Previous state: "<< prevState  <<endl;
-      printRoom();
     } while (currentState != 0  /*actionCounter < 7*/);
   }
 }
@@ -238,7 +227,7 @@ int Q_get(int Q_index1, int Q_index2)
 bool distanceCheck(int distance){
   bool avoid = false;
   
-  if (distance < SETVALUE){
+  if (distance < 200){
     avoid = true;
   }
   else {
