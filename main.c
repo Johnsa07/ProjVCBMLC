@@ -159,7 +159,7 @@ void data_transfer(void);
   SysTick_Config(150000);
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
 
-  DWT_Delayms(100);
+  DWT_Delayms(1000);
   while(1)
   {
 
@@ -173,11 +173,12 @@ if(SysTickF1)
         SysTickF1 = FALSE;
         //GLCD_TextSetPos(0,0);
             GLCD_print("%d, %d \r", get_Xvel(), accl_feedback());
-            DWT_Delayms(10);
+            DWT_Delayms(500);
             
 }
     if(NewInstr) //
     {
+      DWT_Delayms(1000);
       NewInstr = FALSE;
     
     //GoCar(Test, TestTurn);
@@ -187,19 +188,21 @@ if(SysTickF1)
     // 2. Run machine learning to test action
     action = goToState(car_instr);
     GoCars(action);
+    //  testExp();
     int runTime = 0;
     while (runTime < 1){
         DWT_Delayms(700);
         runTime++;
     }
             GLCD_TextSetPos(0,0);
-            GLCD_print("\f(%d,%d), (%d,%d)\r\n", get_X_accFeedback(0), get_Y_accFeedback(0), get_X_vel(0), get_Y_vel(0));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(1), get_Y_accFeedback(1), get_X_vel(1), get_Y_vel(1));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(2), get_Y_accFeedback(2), get_X_vel(2), get_Y_vel(2));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(3), get_Y_accFeedback(3), get_X_vel(3), get_Y_vel(3));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(4), get_Y_accFeedback(4), get_X_vel(4), get_Y_vel(4));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(5), get_Y_accFeedback(5), get_X_vel(5), get_Y_vel(5));
-            GLCD_print("(%d,%d), (%d,%d) \r\n", get_X_accFeedback(6), get_Y_accFeedback(6), get_X_vel(6), get_Y_vel(6));
+            GLCD_print("\f%d,%d;%d,%d\r\n", get_X_accFeedback(0), get_Y_accFeedback(0), get_X_vel(0), get_Y_vel(0));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(1), get_Y_accFeedback(1), get_X_vel(1), get_Y_vel(1));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(2), get_Y_accFeedback(2), get_X_vel(2), get_Y_vel(2));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(3), get_Y_accFeedback(3), get_X_vel(3), get_Y_vel(3));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(4), get_Y_accFeedback(4), get_X_vel(4), get_Y_vel(4));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(5), get_Y_accFeedback(5), get_X_vel(5), get_Y_vel(5));
+            GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(6), get_Y_accFeedback(6), get_X_vel(6), get_Y_vel(6));
+      //      GLCD_print("%d,%d;%d,%d\r\n", get_X_accFeedback(7), get_Y_accFeedback(7), get_X_vel(7), get_Y_vel(7));
                 car_instr=car_stop;
     GoCars(car_instr);
             DWT_Delayms(2000);

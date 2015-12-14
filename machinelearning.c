@@ -10,8 +10,8 @@ int roomSize = 15;
 int currentPlace;
 int carY;
 int carX;
-int X_accFeedback[7], X_vel[7];
-int Y_accFeedback[7], Y_vel[7];
+int X_accFeedback[8], X_vel[8];
+int Y_accFeedback[8], Y_vel[8];
 
 int Q[7][7];
 int R[7][7] =
@@ -52,7 +52,7 @@ void testAllActions(int state){
   	//doAction 0
   car_state car_fb;
         for (int i = 0; i < numOfStates; i++){
-          if (1) //(i==0 || i==3 || i==6)
+          if (i==0 || i==3 || i==6)
           {
                 GoCars(i);
         //wait
@@ -60,21 +60,21 @@ void testAllActions(int state){
                 {
                 DWT_Delay(5000000);
                 } else {
-                  DWT_Delay(350000);
+                  DWT_Delay(1000000);
                 }
         //get Accelerometer value
                 do
                 {
                 car_fb = accl_feedback();
-                } while (car_fb != car_error)
+                } while (car_fb == car_error);
                 Q[state][i] = calcQ(car_fb);
           }
                 X_accFeedback[i] = get_X();
                 Y_accFeedback[i] = get_Y();
                 X_vel[i] = get_Xvel();
-                Y_vel[i] = get_Yvel();
+                Y_vel[i] = get_intdir();
         }
-	
+
 }
 
 int goToState(int state){
@@ -96,12 +96,12 @@ bool validTest(int state){
         bool valid = false;
         int test = 0;
         for (int i = 0; i < numOfStates; i++){
-                if (Q[state][i] == 100 && valid == true) {
-                        valid = false;
+                if (Q[state][i] == 100) {
+                        test++;
                 }                        
-                if (Q[state][i] == 100 && valid == false){
-                        valid = true;                   
-                }
+        }
+        if (test == 1){
+                valid = true;
         }
         return valid;
 }
@@ -159,3 +159,36 @@ int get_Y_accFeedback(int index) {return Y_accFeedback[index];}
 int get_X_vel(int index) {return X_vel[index];}
 int get_Y_vel(int index) {return Y_vel[index];}
 
+void testExp(){
+  //Redo this method to test actions on the car
+  //And wait after each issued action
+  	//doAction 0
+/*   GoCars(car_fw);
+   DWT_Delay(150000);
+                X_accFeedback[0] = get_X();
+                Y_accFeedback[0] = get_Y();
+                X_vel[0] = get_Xvel();
+                Y_vel[0] = get_Yvel();
+                DWT_Delay(150000);
+                                X_accFeedback[1] = get_X();
+                Y_accFeedback[1] = get_Y();
+                X_vel[1] = get_Xvel();
+                Y_vel[1] = get_Yvel(); */
+                   GoCars(car_backL);
+                   DWT_Delay(400000);
+        for (int i = 0; i < 8; i++){
+                  DWT_Delay(170000);
+        //get Accelerometer value
+
+                //X_accFeedback[i] = get_X();
+                Y_accFeedback[i] = get_Y();
+                //X_vel[i] = get_Xvel();
+                Y_vel[i] = get_Yvel();
+                X_vel[i] = get_intdir();
+                X_accFeedback[i] = get_sumdir();
+                if (i==3) {GoCars(car_back);
+                DWT_Delay(400000);}
+        }
+        	GoCars(3);
+	
+}

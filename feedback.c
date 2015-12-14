@@ -5,8 +5,10 @@ int countX, countY;
 Int16S X, Y, Z, XVel=0, YVel=0, ZVel=0 , XPos=0, YPos=0, ZPos=0;
 long velX[2], velY[2], accX[2], accY[2], posX[2], posY[2], XXX, YYY;
 void move_end_check(void);
+void dir_eval(void);
 car_state XV;
-const int sense=80;
+const int sense=60;
+long dir[10], sumdir, intdir=0;
 
  void position(void)
 {
@@ -42,8 +44,8 @@ const int sense=80;
     velY[1] = velY[0] + accY[0] + ((accY[1] - accY[0])>>1);
     
     //Second integration:
-    posX[1] = posX[0] + velX[0] + ((velX[1] - velX[0])>>1);
-    posY[1] = posY[0] + velY[0] + ((velY[1] - velY[0])>>1);
+ //   posX[1] = posX[0] + velX[0] + ((velX[1] - velX[0])>>1);
+  //  posY[1] = posY[0] + velY[0] + ((velY[1] - velY[0])>>1);
     
     //Current values sent to previous values
     accX[0] = accX[1];
@@ -52,18 +54,19 @@ const int sense=80;
     velY[0] = velY[1];
     
     //posX[1]=posX[1]>>10; //Sensibility adjustment
-    posY[1] = posY[1]>>18;
+  //  posY[1] = posY[1]>>18;
     
     //data_tranfer();
     
     //posX[1]=posX[1]<<18; //Return original value
-    posY[1] = posY[1]<<18;    
+   // posY[1] = posY[1]<<18;    
     
     move_end_check();
+    dir_eval();
     
-    posX[0] = posX[1];
-    posY[0] = posY[1];
-    posX[1]=posX[1]>>16;
+  //  posX[0] = posX[1];
+    //posY[0] = posY[1];
+   // posX[1]=posX[1]>>16;
 
 /*if (accX[1] == 0)
 {return car_stop;}
@@ -117,9 +120,9 @@ car_state accl_feedback(void)
 
       if (velX[1] == 0 && velY[1] == 0)
 {return car_stop;}
-   else if (velX[1] > 0 && velY[1] == 0)
+   else if (velX[1] > 0) // && velY[1] == 0)
   {return car_fw;}
-   else if (velX[1] < 0 && velY[1] == 0)
+   else if (velX[1] < 0) // && velY[1] == 0)
   {return car_back;}
    else if (velX[1] > 0 && accY[1] > 0)
   {return car_fwL;}
@@ -132,4 +135,26 @@ car_state accl_feedback(void)
   else
   {return car_error;}
 }
+
+void dir_eval(void)
+{
+  sumdir=sumdir-dir[9];
+  if (dir[9]>0)
+  {intdir--;}
+  else if (dir[9]<0)
+  {intdir++;}
+  
+  for (int ipa=0; ipa<9; ipa++)
+  {dir[9-ipa]=dir[8-ipa];}
+  
+  dir[0]=accY[0];
+  sumdir=sumdir+dir[0];
+  if (dir[0]>0)
+  {intdir++;}
+  else if (dir[0]<0)
+  {intdir--;}
+}
+
+long get_intdir(void) {return intdir;}
+long get_sumdir(void) {return sumdir;}
   
