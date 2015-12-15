@@ -118,19 +118,19 @@ long get_Yvel() {return velY[0];}
 car_state accl_feedback(void)
 {
 
-      if (velX[1] == 0 && velY[1] == 0)
+      if (velX[1] == 0 && intdir > -4 && intdir < 4)
 {return car_stop;}
-   else if (velX[1] > 0) // && velY[1] == 0)
+   else if (velX[1] > 0 && intdir > -4 && intdir < 4) // && velY[1] == 0)
   {return car_fw;}
-   else if (velX[1] < 0) // && velY[1] == 0)
+   else if (velX[1] < 0 && intdir > -4 && intdir < 4) // && velY[1] == 0)
   {return car_back;}
-   else if (velX[1] > 0 && accY[1] > 0)
+   else if (velX[1] > 0 && intdir > 6)
   {return car_fwL;}
-   else if (velX[1] > 0 && accY[1] < 0)
+   else if (velX[1] > 0 && intdir < -6)
   {return car_fwR;}
-   else if (velX[1] < 0 && accY[1] > 0)
+   else if (velX[1] < 0 && intdir > 6)
   {return car_backL;}
-   else if (velX[1] < 0 && accY[1] < 0)
+   else if (velX[1] < 0 && intdir < -6)
   {return car_backR;}
   else
   {return car_error;}

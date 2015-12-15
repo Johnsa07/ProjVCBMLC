@@ -4,6 +4,7 @@
 
 #include "includes.h"
 
+
 void HCSR04_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -14,9 +15,9 @@ void HCSR04_Init(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(HCSR04_PORT, &GPIO_InitStructure);
 
-//LED
-  GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
-GPIO_Init(GPIOC, &GPIO_InitStructure);
+////LED
+//  GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
+//GPIO_Init(GPIOC, &GPIO_InitStructure);
   
       //ECHO init
   GPIO_InitStructure.GPIO_Pin =  HCSR04_ECHO;
@@ -29,7 +30,7 @@ GPIO_Init(GPIOC, &GPIO_InitStructure);
 
   }
 
-uint32_t HCSR04_Read()
+uint32_t HCSR04_Read(void)
 {
   uint32_t start, stop;
   GPIO_SetBits(HCSR04_PORT, HCSR04_TRIG);
@@ -43,16 +44,16 @@ uint32_t HCSR04_Read()
   
 
   stop=DWT_Get();
-  return ((stop-start)/72);
-  
-}
-         
-void Led_On(void)
-{
-  GPIO_SetBits(GPIOC, GPIO_Pin_6); //LED on
+  return ((stop-start)/72);  
 }
 
-void Led_Off(void)
-{
-  GPIO_ResetBits(GPIOC, GPIO_Pin_6); //LED on
-}
+         
+//void Led_On(void)
+//{
+//  GPIO_SetBits(GPIOC, GPIO_Pin_6); //LED on
+//}
+//
+//void Led_Off(void)
+//{
+//  GPIO_ResetBits(GPIOC, GPIO_Pin_6); //LED on
+//}

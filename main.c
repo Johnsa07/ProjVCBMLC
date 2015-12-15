@@ -155,6 +155,7 @@ void data_transfer(void);
     //Init CarControl and Delay
   Car_Init();
   DWT_Init();
+  HCSR04_Init();
     // SysTick end of count event each 0.5s with input clock equal to 9MHz (HCLK/8, default)
   SysTick_Config(150000);
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
